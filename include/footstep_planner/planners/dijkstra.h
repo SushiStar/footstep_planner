@@ -57,7 +57,7 @@ class Dijkstra {
         const std::shared_ptr<graphs::NavLattice2D> graph,
         const int &start_id);
 
-    // The cost of the given state
+    // The cost of the given bipedal state
     int get_cost(const int& x, const int& y, const int& workspace);
 
     int get_dijkstra_max_cost() const {return dijkstra_max_cost_; }

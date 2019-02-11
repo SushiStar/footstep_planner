@@ -406,7 +406,7 @@ int main(int argc, char* argv[]) {
     int solcost;
 
     ROS_INFO("Planning...");
-    const int sol = mha_planner->replan(60.0, &solution_stateIDs_V, &solcost);
+    const int sol = mha_planner->replan(120.0, &solution_stateIDs_V, &solcost);
 
     const double total_planning_time =
         hbsp_heuristic_gen_time + \
@@ -450,6 +450,6 @@ int main(int argc, char* argv[]) {
     }
 
     // Uncomment if visualizing
-    // ros::spin();
+    //ros::spin();
     return 0;
 }

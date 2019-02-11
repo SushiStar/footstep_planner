@@ -31,6 +31,7 @@
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_GRAPHS_NAV_LATTICE_8D_H_
 
 #include <footstep_planner/graphs/homotopy_information.h>
+#include <footstep_planner/graphs/nanoflann.hpp>
 #include <footstep_planner/utils/datatypes.h>
 #include <robot_parameters.pb.h>
 #include <environment_projections.pb.h>
