@@ -52,6 +52,10 @@ NavLattice8D::NavLattice8D(
         footstep_planner::proto::unpack_from_proto(
             &robot_parameters_,
             robot_details);
+        bipedal_ID_to_state_.clear();
+        treeContainer.bipedal_ID_to_state_=&bipedal_ID_to_state_;
+        kdtree = std::make_shared<kdtree_> (4/*dim*/, treeContainer, 
+                nanoflann::KDTreeSingleIndexAdaptorParams(10));
 }
 
 NavLattice8D::~NavLattice8D() {
@@ -500,6 +504,8 @@ int NavLattice8D::create_new_bipedal_state(const BipedalState& new_state) {
     bipedal_ID_to_state_[state_id]->right_foot_id = new_state.right_foot_id;
     bipedal_ID_to_state_[state_id]->signature_id = new_state.signature_id;
     bipedal_state_to_ID_[new_state] = state_id;
+
+    kdtree->addPoints(state_id, state_id);
 
     return state_id;
 }

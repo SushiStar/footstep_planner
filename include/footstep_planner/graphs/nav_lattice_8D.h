@@ -30,17 +30,47 @@
 #ifndef SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_GRAPHS_NAV_LATTICE_8D_H_
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_GRAPHS_NAV_LATTICE_8D_H_
 
+#include <environment_projections.pb.h>
 #include <footstep_planner/graphs/homotopy_information.h>
-#include <footstep_planner/graphs/nanoflann.hpp>
 #include <footstep_planner/utils/datatypes.h>
 #include <robot_parameters.pb.h>
-#include <environment_projections.pb.h>
 #include <smpl/distance_map/sparse_distance_map.h>
-#include <vector>
+#include <footstep_planner/utils/nanoflann.hpp>
 #include <unordered_map>
+#include <vector>
 
 namespace footstep_planner {
 namespace graphs {
+
+struct TreeNodes {
+    std::vector<BipedalState*>* bipedal_ID_to_state_;
+
+    inline size_t kdtree_get_point_count() const
+    {
+        return bipedal_ID_to_state_->size();
+    }
+    // get the elements and calculate the distance
+
+    inline double kdtree_get_pt(const size_t idx, int dim) const
+    {
+        switch (dim) {
+            case 0:
+                return bipedal_ID_to_state_->at(idx)->x;
+            case 1:
+                return bipedal_ID_to_state_->at(idx)->y;
+            case 2:
+                return bipedal_ID_to_state_->at(idx)->z;
+            case 3:
+                return bipedal_ID_to_state_->at(idx)->theta;
+        }
+    }
+
+    template <class BBOX>
+    bool kdtree_get_bbox(BBOX& /* bb*/) const
+    {
+        return false;
+    }
+};
 
 // This class implements an 8D navigation lattice that is used for footstep
 // planning for a humanoid robot. This navigation lattice is also augmented
@@ -51,7 +81,7 @@ namespace graphs {
 // defines the state of a single foot. The BipedalState is comprised of two
 // FootStates (see utils/datatypes.h).
 class NavLattice8D {
- public:
+public:
     // The navigation lattice is constructed using the following:
     // (1) distance_map Contains obstacle information, more specifically the
     // distance from each cell to the nearest obstacle
@@ -72,27 +102,18 @@ class NavLattice8D {
 
     // Given the coordinates of the point between the feet, the left and right
     // foot states are extracted to create the bipedal state
-    int set_bipedal_state(
-        const int& x,
-        const int& y,
-        const int& z,
-        const int& theta);
+    int set_bipedal_state(const int& x, const int& y, const int& z,
+                          const int& theta);
 
     // Creates the start state for the given position. If the start state is not
     // valid throws a ROS_ERROR and returns the start state id otherwise
-    int set_start_state(
-        const int& x,
-        const int& y,
-        const int& z,
-        const double& theta_rad);
+    int set_start_state(const int& x, const int& y, const int& z,
+                        const double& theta_rad);
 
     // Create the goal state for the given position. If the goal state is not
     // valid throws a ROS_ERROR and returns the goal state id otherwise
-    int set_goal_state(
-        const int& x,
-        const int& y,
-        const int& z,
-        const double& theta_rad);
+    int set_goal_state(const int& x, const int& y, const int& z,
+                       const double& theta_rad);
 
     // Returns the foot state at the given ID, if it exists, and NULL otherwise
     FootState* get_foot_state(const int& state_id) const;
@@ -103,19 +124,13 @@ class NavLattice8D {
 
     // Returns the foot state at the given discretized position values, if it
     // exists, and NULL otherwise
-    FootState* get_foot_state(
-        const int& x,
-        const int& y,
-        const int& z,
-        const int& theta) const;
+    FootState* get_foot_state(const int& x, const int& y, const int& z,
+                              const int& theta) const;
 
     // Returns the foot state at the give continuous position values
     // (meters/radians), if it exists, and NULL otherwise
-    FootState* get_foot_state(
-        const double& x_m,
-        const double& y_m,
-        const double& z_m,
-        const double& theta_rad) const;
+    FootState* get_foot_state(const double& x_m, const double& y_m,
+                              const double& z_m, const double& theta_rad) const;
 
     // Returns the bipedal state at the state ID, if it exists, and NULL
     // otherwise
@@ -130,35 +145,24 @@ class NavLattice8D {
 
     // Given discretized position values, returns true if the foot state is
     // valid and false otherwise
-    bool is_valid_foot_state(
-        const int& x,
-        const int& y,
-        const int& z);
+    bool is_valid_foot_state(const int& x, const int& y, const int& z);
 
     // Given a source state id, this function fills in valid successor biepdal
     // state IDs and their associated costs into succ_ids and costs respectively
-    void get_succs(
-        const int& source_state_id,
-        std::vector<int>* succ_ids,
-        std::vector<double>* costs);
+    void get_succs(const int& source_state_id, std::vector<int>* succ_ids,
+                   std::vector<double>* costs);
 
     // Returns true if the given state is within a specified distance from the
     // goal (goal tolerance defined in robot_parameters.proto)
     bool is_goal(const int& current_state_id);
 
     // Returns the state ID given discretized coordinates
-    int get_foot_state_id(
-        const int& x,
-        const int& y,
-        const int& z,
-        const int& theta) const;
+    int get_foot_state_id(const int& x, const int& y, const int& z,
+                          const int& theta) const;
 
     // Returns the state ID given continuous coordinates in meters/radians
-    int get_foot_state_id(
-        const double& x_m,
-        const double& y_m,
-        const double& z_m,
-        const double& theta_rad) const;
+    int get_foot_state_id(const double& x_m, const double& y_m,
+                          const double& z_m, const double& theta_rad) const;
 
     // Returns a vector of continous coordinates for the given state ID
     Eigen::Vector4d get_continuous_coordinates(const int& state_4D_id) const;
@@ -170,36 +174,31 @@ class NavLattice8D {
     // See proto/robot_parameters/robot_parameters.proto for collision sphere
     // definition
     void get_transformed_collision_spheres(
-        const int &bipedal_state_id,
+        const int& bipedal_state_id,
         std::vector<Eigen::Vector4d>* transformed_spheres);
 
     // Returns a vector containing the continuous values (meters/radians) of the
     // point between the feet
-    Eigen::Vector4d get_cont_averaged_state(
-        const int& left_state_id,
-        const int& right_state_id) const;
+    Eigen::Vector4d get_cont_averaged_state(const int& left_state_id,
+                                            const int& right_state_id) const;
 
     // Returns a vector containing the discretized values of the point between
     // the feet
-    Eigen::Vector4i get_disc_averaged_state(
-        const int& left_state_id,
-        const int& right_state_id) const;
+    Eigen::Vector4i get_disc_averaged_state(const int& left_state_id,
+                                            const int& right_state_id) const;
 
     // Given the signature ID, fills in the signature vector
-    void get_signature(
-        const int& signature_id,
-        std::vector<int>* signature);
+    void get_signature(const int& signature_id, std::vector<int>* signature);
 
- private:
+private:
     // This function finds the successors for each foot and fills in the vector
     // with valid foot IDs. The foot can only expand in the forward direction;
     // the magnitude of the movement is defined by the motion primitives
     //
     // See proto/robot_parameters/robot_parameters.proto for motion primitive
     // definition
-    void get_foot_succs(
-        const BipedalState& bipedal_state,
-        std::vector<int>* foot_succs);
+    void get_foot_succs(const BipedalState& bipedal_state,
+                        std::vector<int>* foot_succs);
 
     // Creates a state at the specified continuous coordinates if one does not
     // exists and returns the newly created state
@@ -207,28 +206,22 @@ class NavLattice8D {
 
     // Creates a state at the specified discretized coordinates if one does not
     // exists and returns the newly created state
-    FootState* create_new_foot_state(
-        const int& x,
-        const int& y,
-        const int& z,
-        const int& theta);
+    FootState* create_new_foot_state(const int& x, const int& y, const int& z,
+                                     const int& theta);
 
     // Creates a state at the specified continuous coordinates if one does not
     // exists and returns the newly created state
-    FootState* create_new_foot_state(
-        const double& x_m,
-        const double& y_m,
-        const double& z_m,
-        const double& theta_rad);
+    FootState* create_new_foot_state(const double& x_m, const double& y_m,
+                                     const double& z_m,
+                                     const double& theta_rad);
 
     // Creates a new bipedal state and returns its state ID
     int create_new_bipedal_state(const BipedalState& new_state);
 
     // Returns the cost of executing the action to move from the source state
     // to the new state.
-    double get_action_cost(
-        const FootState* source_state,
-        const FootState* new_state);
+    double get_action_cost(const FootState* source_state,
+                           const FootState* new_state);
 
     // Returns the ID for the active foot (i.e. foot state that is going to be
     // expanded); The next_foot value in the struct defines which foot state is
@@ -259,6 +252,15 @@ class NavLattice8D {
     // A mapping between a bipedal state and its ID and ivce versa
     std::unordered_map<BipedalState, int> bipedal_state_to_ID_;
     std::vector<BipedalState*> bipedal_ID_to_state_;
+
+    // kdtree definition
+    typedef nanoflann::KDTreeSingleIndexDynamicAdaptor<
+        nanoflann::L2_Simple_Adaptor<double, TreeNodes>, TreeNodes, 4 /*dim*/>
+        kdtree_;
+
+    // A kd-tree container, and kd-tree interafce
+    TreeNodes treeContainer;
+    std::shared_ptr<kdtree_> kdtree;
 
     // The distance map of the environment
     std::shared_ptr<smpl::SparseDistanceMap> distance_map_;

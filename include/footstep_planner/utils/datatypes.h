@@ -39,10 +39,9 @@ struct State2D {
     int y;
     int workspace;
 
-    bool operator==(const State2D &other) const {
-        return (x == other.x &&
-                y == other.y &&
-                workspace == other.workspace);
+    bool operator==(const State2D &other) const
+    {
+        return (x == other.x && y == other.y && workspace == other.workspace);
     }
 };
 
@@ -51,9 +50,9 @@ struct Vertex {
     int id;
     int signature_id;
 
-    bool operator==(const Vertex &other) const {
-        return (id == other.id &&
-                signature_id == other.signature_id);
+    bool operator==(const Vertex &other) const
+    {
+        return (id == other.id && signature_id == other.signature_id);
     }
 };
 
@@ -65,10 +64,9 @@ struct FootState {
     int z;
     int theta;
 
-    bool operator==(const FootState &other) const {
-        return (x == other.x &&
-                y == other.y &&
-                z == other.z &&
+    bool operator==(const FootState &other) const
+    {
+        return (x == other.x && y == other.y && z == other.z &&
                 theta == other.theta);
     }
 };
@@ -76,6 +74,11 @@ struct FootState {
 enum Foot { left, right };
 
 struct BipedalState {
+    double x;
+    double y;
+    double z;
+    double theta;
+
     // The next foot that needs to be expanded
     Foot next_foot;
 
@@ -89,7 +92,10 @@ struct BipedalState {
     // using the averaged state
     int signature_id;
 
-    bool operator==(const BipedalState &other) const {
+    BipedalState():x(0),y(0),z(0),theta(0){}
+
+    bool operator==(const BipedalState &other) const
+    {
         return (next_foot == other.next_foot &&
                 left_foot_id == other.left_foot_id &&
                 right_foot_id == other.right_foot_id &&
@@ -102,17 +108,19 @@ struct BipedalState {
 
 namespace std {
 
-template<>
+template <>
 struct hash<footstep_planner::graphs::Vertex> {
-    inline size_t operator()(const footstep_planner::graphs::Vertex& v) const {
+    inline size_t operator()(const footstep_planner::graphs::Vertex &v) const
+    {
         return boost::hash_value(v.id);
     }
 };
 
-template<>
+template <>
 struct hash<footstep_planner::graphs::BipedalState> {
-    inline size_t operator()(const footstep_planner::graphs::BipedalState& b)
-        const {
+    inline size_t operator()(
+        const footstep_planner::graphs::BipedalState &b) const
+    {
         size_t hash = 0;
         boost::hash_combine(hash, b.next_foot);
         boost::hash_combine(hash, b.left_foot_id);
