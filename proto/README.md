@@ -33,7 +33,7 @@ The end of the `robot_parameters.msg` file is a series of `motion_primitives`. A
 ```yaml
 motion_primitives {
   dx: _magnitude of the x-component of the forward direction vector_
-  dy: _magnitude of the y-component of the forward direction vectorn_
+  dy: _magnitude of the y-component of the forward direction vector_
   dz: _magnitude of the z-unit vector_
 }
 ```
