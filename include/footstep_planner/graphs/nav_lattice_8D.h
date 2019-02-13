@@ -102,17 +102,17 @@ public:
 
     // Given the coordinates of the point between the feet, the left and right
     // foot states are extracted to create the bipedal state
-    int set_bipedal_state(const int& x, const int& y, const int& z,
-                          const int& theta);
+    int set_bipedal_state(const double& x, const double& y, const double& z,
+                          const double& theta_rad);
 
     // Creates the start state for the given position. If the start state is not
     // valid throws a ROS_ERROR and returns the start state id otherwise
-    int set_start_state(const int& x, const int& y, const int& z,
+    int set_start_state(const double& x, const double& y, const double& z,
                         const double& theta_rad);
 
     // Create the goal state for the given position. If the goal state is not
     // valid throws a ROS_ERROR and returns the goal state id otherwise
-    int set_goal_state(const int& x, const int& y, const int& z,
+    int set_goal_state(const double& x, const double& y, const double& z,
                        const double& theta_rad);
 
     // Returns the foot state at the given ID, if it exists, and NULL otherwise
@@ -122,15 +122,10 @@ public:
     // NULL otherwise
     FootState* get_foot_state(const Eigen::Vector4d& state_pos) const;
 
-    // Returns the foot state at the given discretized position values, if it
-    // exists, and NULL otherwise
-    FootState* get_foot_state(const int& x, const int& y, const int& z,
-                              const int& theta) const;
-
     // Returns the foot state at the give continuous position values
     // (meters/radians), if it exists, and NULL otherwise
-    FootState* get_foot_state(const double& x_m, const double& y_m,
-                              const double& z_m, const double& theta_rad) const;
+    FootState* get_foot_state(const double& x, const double& y,
+                              const double& z, const double& theta_rad) const;
 
     // Returns the bipedal state at the state ID, if it exists, and NULL
     // otherwise
@@ -141,11 +136,11 @@ public:
 
     // Given a discretized position vector, returns true if the foot state is
     // valid and false otherwise
-    bool is_valid_foot_state(const Eigen::Vector3i& foot_pos);
+    bool is_valid_foot_state(const Eigen::Vector3d& foot_pos);
 
     // Given discretized position values, returns true if the foot state is
     // valid and false otherwise
-    bool is_valid_foot_state(const int& x, const int& y, const int& z);
+    bool is_valid_foot_state(const double& x, const double& y, const double& z);
 
     // Given a source state id, this function fills in valid successor biepdal
     // state IDs and their associated costs into succ_ids and costs respectively
