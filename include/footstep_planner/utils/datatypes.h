@@ -58,17 +58,19 @@ struct Vertex {
 
 // The 4D state of the foot
 struct FootState {
-    int id;
-    int x;
-    int y;
-    int z;
-    int theta;
+    double id;
+    double x;
+    double y;
+    double z;
+    double theta;
 
-    bool operator==(const FootState &other) const
-    {
-        return (x == other.x && y == other.y && z == other.z &&
-                theta == other.theta);
-    }
+    /*
+     *bool operator==(const FootState &other) const
+     *{
+     *    return (x == other.x && y == other.y && z == other.z &&
+     *            theta == other.theta);
+     *}
+     */
 };
 
 enum Foot { left, right };

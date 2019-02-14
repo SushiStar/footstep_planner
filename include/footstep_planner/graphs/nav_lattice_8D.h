@@ -31,7 +31,7 @@
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_GRAPHS_NAV_LATTICE_8D_H_
 
 #include <environment_projections.pb.h>
-#include <footstep_planner/graphs/homotopy_information.h>
+//#include <footstep_planner/graphs/homotopy_information.h>
 #include <footstep_planner/utils/datatypes.h>
 #include <robot_parameters.pb.h>
 #include <smpl/distance_map/sparse_distance_map.h>
@@ -152,12 +152,12 @@ public:
     bool is_goal(const int& current_state_id);
 
     // Returns the state ID given discretized coordinates
-    int get_foot_state_id(const int& x, const int& y, const int& z,
-                          const int& theta) const;
+    //int get_foot_state_id(const int& x, const int& y, const int& z,
+                          //const int& theta) const;
 
     // Returns the state ID given continuous coordinates in meters/radians
-    int get_foot_state_id(const double& x_m, const double& y_m,
-                          const double& z_m, const double& theta_rad) const;
+    int get_foot_state_id(const double& x, const double& y,
+                          const double& z, const double& theta_rad) const;
 
     // Returns a vector of continous coordinates for the given state ID
     Eigen::Vector4d get_continuous_coordinates(const int& state_4D_id) const;
@@ -183,7 +183,7 @@ public:
                                             const int& right_state_id) const;
 
     // Given the signature ID, fills in the signature vector
-    void get_signature(const int& signature_id, std::vector<int>* signature);
+    //void get_signature(const int& signature_id, std::vector<int>* signature);
 
 private:
     // This function finds the successors for each foot and fills in the vector
@@ -201,13 +201,15 @@ private:
 
     // Creates a state at the specified discretized coordinates if one does not
     // exists and returns the newly created state
-    FootState* create_new_foot_state(const int& x, const int& y, const int& z,
-                                     const int& theta);
+    /*
+     *FootState* create_new_foot_state(const int& x, const int& y, const int& z,
+     *                                 const int& theta);
+     */
 
     // Creates a state at the specified continuous coordinates if one does not
     // exists and returns the newly created state
-    FootState* create_new_foot_state(const double& x_m, const double& y_m,
-                                     const double& z_m,
+    FootState* create_new_foot_state(const double& x, const double& y,
+                                     const double& z,
                                      const double& theta_rad);
 
     // Creates a new bipedal state and returns its state ID
@@ -228,10 +230,10 @@ private:
     int get_pivot_foot_id(const BipedalState& bipedal_state);
 
     // Return the ID for the given signature
-    int get_signature_id(const std::vector<int>& signature);
+    //int get_signature_id(const std::vector<int>& signature);
 
     // Creates the ID for the given signature and returns it
-    int create_new_signature(const std::vector<int>& signature);
+    //int create_new_signature(const std::vector<int>& signature);
 
     // The goal state; note that this state contains the coordinates for the
     // point between the feet
@@ -241,8 +243,8 @@ private:
     std::unordered_map<int, FootState*> foot_ID_to_state_;
 
     // A mapping between a signature and its ID and vice versa
-    std::unordered_map<std::vector<int>, int> signature_to_ID_;
-    std::vector<std::vector<int>> ID_to_signature_;
+    //std::unordered_map<std::vector<int>, int> signature_to_ID_;
+    //std::vector<std::vector<int>> ID_to_signature_;
 
     // A mapping between a bipedal state and its ID and ivce versa
     std::unordered_map<BipedalState, int> bipedal_state_to_ID_;
