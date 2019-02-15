@@ -644,20 +644,22 @@ int MHAPlanner::compute_heuristic(MHASearchState* state, int hidx)
     const int id =
         environment_->get_foot_state_id(
             avg_state.x(), avg_state.y(), avg_state.z(), 0);
-    if (hidx == 0) {
+    //if (hidx == 0) {
         return m_hanchor->get_heuristic_value(
             id, avg_state.x(), avg_state.y(), avg_state.z());
-    }
-    else {
-        std::vector<int> signature;
-        environment_->get_signature(bipedal_state->signature_id, &signature);
-
-        // anchor_heur_val * w2
-        const int anchor_heur_val = static_cast<int>(state->od[0].h * m_eps_mha);
-        return m_heurs->get_heuristic_value(
-            hidx, id, avg_state.x(), avg_state.y(), avg_state.z(),
-            anchor_heur_val, signature);
-    }
+    //}
+/*
+ *    else {
+ *        std::vector<int> signature;
+ *        environment_->get_signature(bipedal_state->signature_id, &signature);
+ *
+ *        // anchor_heur_val * w2
+ *        const int anchor_heur_val = static_cast<int>(state->od[0].h * m_eps_mha);
+ *        return m_heurs->get_heuristic_value(
+ *            hidx, id, avg_state.x(), avg_state.y(), avg_state.z(),
+ *            anchor_heur_val, signature);
+ *    }
+ */
 }
 
 int MHAPlanner::get_minf(CHeap& pq) const

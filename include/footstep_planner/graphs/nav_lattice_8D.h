@@ -240,7 +240,8 @@ private:
     FootState* goal_state_;
 
     // A mapping between state IDs and state coordinates
-    std::unordered_map<int, FootState*> foot_ID_to_state_;
+    std::unordered_map<FootState*, int> foot_state_to_ID_;
+    std::vector<FootState*> foot_ID_to_state;
 
     // A mapping between a signature and its ID and vice versa
     //std::unordered_map<std::vector<int>, int> signature_to_ID_;

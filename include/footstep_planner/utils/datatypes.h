@@ -30,6 +30,9 @@
 #ifndef SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_UTILS_DATATYPES_H_
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_UTILS_DATATYPES_H_
 
+#include <Eigen/Geometry>
+#include <boost/functional/hash>
+
 namespace footstep_planner {
 namespace graphs {
 
@@ -63,14 +66,6 @@ struct FootState {
     double y;
     double z;
     double theta;
-
-    /*
-     *bool operator==(const FootState &other) const
-     *{
-     *    return (x == other.x && y == other.y && z == other.z &&
-     *            theta == other.theta);
-     *}
-     */
 };
 
 enum Foot { left, right };
@@ -90,18 +85,26 @@ struct BipedalState {
     // The FootState ID of the right foot
     int right_foot_id;
 
-    // The signature for this Bipedal State; the signature is calculated
-    // using the averaged state
-    int signature_id;
+    BipedalState() : x(0), y(0), z(0), theta(0) {}
+    void set_center(const Eigen::Vector4d &center)
+    {
+        x = center(0);
+        y = center(1);
+        z = center(2);
+        theta = center(3);
+    }
 
-    BipedalState():x(0),y(0),z(0),theta(0){}
+    Eigen::Vector4d get_center()
+    {
+        Eigen::Vector4d c(x, y, z, theta);
+        return c;
+    }
 
     bool operator==(const BipedalState &other) const
     {
         return (next_foot == other.next_foot &&
                 left_foot_id == other.left_foot_id &&
-                right_foot_id == other.right_foot_id &&
-                signature_id == other.signature_id);
+                right_foot_id == other.right_foot_id);
     }
 };
 
@@ -123,14 +126,35 @@ struct hash<footstep_planner::graphs::BipedalState> {
     inline size_t operator()(
         const footstep_planner::graphs::BipedalState &b) const
     {
-        size_t hash = 0;
+        size_t hash = 11;
         boost::hash_combine(hash, b.next_foot);
         boost::hash_combine(hash, b.left_foot_id);
         boost::hash_combine(hash, b.right_foot_id);
-        boost::hash_combine(hash, b.signature_id);
+        // boost::hash_combine(hash, b.signature_id);
         return hash;
     }
 };
+
+template <>
+struct hash<footstep_planner::graphs::FootState> {
+    inline size_t operator()
+        (const footstep_planner::graphs::FootState &f) const
+    {
+        size_t seed = 7;
+        std::size_t x, y, z, theta;
+        x = boost::hash_value(f.x);
+        y = boost::hash_value(f.y);
+        z = boost::hash_value(f.z);
+        theta = boost::hash_value(f.theta);
+
+        boost::hash_combine(seed, x);
+        boost::hash_combine(seed, y);
+        boost::hash_combine(seed, z);
+        boost::hash_combine(seed, theta);
+        
+        return seed;
+    }
+}
 
 }  // namespace std
 
