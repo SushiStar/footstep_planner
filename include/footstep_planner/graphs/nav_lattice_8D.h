@@ -213,7 +213,7 @@ private:
                                      const double& theta_rad);
 
     // Creates a new bipedal state and returns its state ID
-    int create_new_bipedal_state(const BipedalState& new_state);
+    int create_new_bipedal_state(const BipedalState* new_state);
 
     // Returns the cost of executing the action to move from the source state
     // to the new state.
@@ -240,7 +240,7 @@ private:
     FootState* goal_state_;
 
     // A mapping between state IDs and state coordinates
-    std::unordered_map<FootState*, int> foot_state_to_ID_;
+    std::unordered_map<std::size_t, FootState*> foot_state_to_ID_;
     std::vector<FootState*> foot_ID_to_state;
 
     // A mapping between a signature and its ID and vice versa
@@ -248,7 +248,7 @@ private:
     //std::vector<std::vector<int>> ID_to_signature_;
 
     // A mapping between a bipedal state and its ID and ivce versa
-    std::unordered_map<BipedalState, int> bipedal_state_to_ID_;
+    //std::unordered_map<BipedalState, int> bipedal_state_to_ID_;
     std::vector<BipedalState*> bipedal_ID_to_state_;
 
     // kdtree definition
@@ -270,6 +270,9 @@ private:
 
     const std::shared_ptr<environment::proto::ValidSteppingCells>
         valid_stepping_cells_;
+
+    // hash for footprint
+    const std::size_t hashkey_4d(double x_, double y_, double z_, double theta_);
 };
 
 }  // namespace graphs

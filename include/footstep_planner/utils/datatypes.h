@@ -42,8 +42,7 @@ struct State2D {
     int y;
     int workspace;
 
-    bool operator==(const State2D &other) const
-    {
+    bool operator==(const State2D &other) const {
         return (x == other.x && y == other.y && workspace == other.workspace);
     }
 };
@@ -53,19 +52,21 @@ struct Vertex {
     int id;
     int signature_id;
 
-    bool operator==(const Vertex &other) const
-    {
+    bool operator==(const Vertex &other) const {
         return (id == other.id && signature_id == other.signature_id);
     }
 };
 
 // The 4D state of the foot
 struct FootState {
-    double id;
+    int id;
     double x;
     double y;
     double z;
     double theta;
+    FootState(const int id_, const double x_, const double y_, const double z_,
+              const double theta_)
+        : id(id_), x(x_), y(y_), z(z_), theta(theta_) {}
 };
 
 enum Foot { left, right };
@@ -85,23 +86,28 @@ struct BipedalState {
     // The FootState ID of the right foot
     int right_foot_id;
 
+    int id;
+
     BipedalState() : x(0), y(0), z(0), theta(0) {}
-    void set_center(const Eigen::Vector4d &center)
-    {
+    void set_center(const Eigen::Vector4d &center) {
         x = center(0);
         y = center(1);
         z = center(2);
         theta = center(3);
     }
+    void set_center(const double& x_, const double& y_, const double &z_, const double& theta_){
+        x = x_;
+        y = y_;
+        z = z_;
+        theta = theta_;
+    }
 
-    Eigen::Vector4d get_center()
-    {
+    Eigen::Vector4d get_center() {
         Eigen::Vector4d c(x, y, z, theta);
         return c;
     }
 
-    bool operator==(const BipedalState &other) const
-    {
+    bool operator==(const BipedalState &other) const {
         return (next_foot == other.next_foot &&
                 left_foot_id == other.left_foot_id &&
                 right_foot_id == other.right_foot_id);
@@ -115,8 +121,7 @@ namespace std {
 
 template <>
 struct hash<footstep_planner::graphs::Vertex> {
-    inline size_t operator()(const footstep_planner::graphs::Vertex &v) const
-    {
+    inline size_t operator()(const footstep_planner::graphs::Vertex &v) const {
         return boost::hash_value(v.id);
     }
 };
@@ -124,8 +129,7 @@ struct hash<footstep_planner::graphs::Vertex> {
 template <>
 struct hash<footstep_planner::graphs::BipedalState> {
     inline size_t operator()(
-        const footstep_planner::graphs::BipedalState &b) const
-    {
+        const footstep_planner::graphs::BipedalState &b) const {
         size_t hash = 11;
         boost::hash_combine(hash, b.next_foot);
         boost::hash_combine(hash, b.left_foot_id);
@@ -137,9 +141,8 @@ struct hash<footstep_planner::graphs::BipedalState> {
 
 template <>
 struct hash<footstep_planner::graphs::FootState> {
-    inline size_t operator()
-        (const footstep_planner::graphs::FootState &f) const
-    {
+    inline size_t operator()(
+        const footstep_planner::graphs::FootState &f) const {
         size_t seed = 7;
         std::size_t x, y, z, theta;
         x = boost::hash_value(f.x);
@@ -151,7 +154,7 @@ struct hash<footstep_planner::graphs::FootState> {
         boost::hash_combine(seed, y);
         boost::hash_combine(seed, z);
         boost::hash_combine(seed, theta);
-        
+
         return seed;
     }
 }
