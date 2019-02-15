@@ -61,55 +61,6 @@ int get_closest_stepping_cell(
     return environment->surface_3d_to_stepping_cells(index_3d);
 }
 
-bool read_signature_array(
-    XmlRpc::XmlRpcValue& signatures_xml,
-    std::vector<std::vector<int>>* signatures) {
-    if (signatures_xml.size() > 0) {
-        for (int i = 0; i < signatures_xml.size(); ++i) {
-            XmlRpc::XmlRpcValue& signature_xml = signatures_xml[i];
-            if (signature_xml.getType() != XmlRpc::XmlRpcValue::TypeArray) {
-                ROS_ERROR("Signature must be represented as an array");
-                return false;
-            }
-
-            std::vector<int> signature;
-            for (int j = 0; j < signature_xml.size(); ++j) {
-                XmlRpc::XmlRpcValue& beam = signature_xml[j];
-                if (beam.getType() != XmlRpc::XmlRpcValue::TypeInt) {
-                    ROS_ERROR("Signature must be an array of integers");
-                    return false;
-                }
-                signature.push_back(std::move((static_cast<int>(beam))));
-            }
-            signatures->push_back(signature);
-        }
-    }
-}
-
-bool read_signatures(
-    std::vector<std::vector<int>>* signatures,
-    std::vector<std::vector<int>>* h_signatures,
-    const ros::NodeHandle& nh) {
-    XmlRpc::XmlRpcValue signatures_xml;
-    nh.getParam("signatures", signatures_xml);
-    if (signatures_xml.getType() != XmlRpc::XmlRpcValue::TypeArray) {
-        ROS_ERROR("signatures parameter must be an array");
-        return false;
-    }
-    signatures->reserve(signatures_xml.size());
-    read_signature_array(signatures_xml, signatures);
-
-    XmlRpc::XmlRpcValue h_signatures_xml;
-    nh.getParam("h_signatures", h_signatures_xml);
-    if (h_signatures_xml.getType() != XmlRpc::XmlRpcValue::TypeArray) {
-        ROS_ERROR("h_signatures parameter must be an array");
-        return false;
-    }
-    h_signatures->reserve(h_signatures_xml.size());
-    read_signature_array(h_signatures_xml, h_signatures);
-
-    return true;
-}
 
 int main(int argc, char* argv[]) {
     ROS_INFO("footstep_planner_test");
@@ -253,11 +204,6 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    // Read the signatures from the scenario file
-    std::vector<std::vector<int>> signatures;
-    std::vector<std::vector<int>> h_signatures;
-    read_signatures(&signatures, &h_signatures, nh);
-
     ROS_INFO("Generating anchor heuristic...");
     double start_time =
         static_cast<double>(clock()) / static_cast<double>(CLOCKS_PER_SEC);
@@ -277,28 +223,6 @@ int main(int argc, char* argv[]) {
             dijkstra_planner,
             environment_interpreter->get_environment_projections());
 
-    ROS_INFO("Generating homotopy-based heuristics...");
-    start_time =
-        static_cast<double>(clock()) / static_cast<double>(CLOCKS_PER_SEC);
-    // Run planner for hbsp heuristic
-    const auto hbsp_planner =
-        std::make_shared<planners::HBSP>(
-            homotopy_information,
-            nav_lattice_2d,
-            projected_goal_id,
-            projected_start_id,
-            signatures,
-            h_signatures);
-    end_time =
-        static_cast<double>(clock()) / static_cast<double>(CLOCKS_PER_SEC);
-    const double hbsp_heuristic_gen_time =
-        signatures.size() > 0 ? end_time - start_time : 0.0;
-
-    // Create the HBSP Heuristics
-    const auto hbsp_heur =
-        std::make_shared<heuristics::HomotopyBasedHeuristic>(
-            hbsp_planner,
-            environment_interpreter->get_environment_projections());
 
     const auto nav_lattice_4d = std::make_shared<graphs::NavLattice8D>(
         environment_interpreter->get_distance_map(),
@@ -344,8 +268,8 @@ int main(int argc, char* argv[]) {
         std::make_shared<planners::MHAPlanner>(
             nav_lattice_4d,
             dijkstra_heur,
-            hbsp_heur,
-            signatures.size(),
+            nullptr,                // not using homotopy heuristic       
+            0,                      // no other inadmissible heurisitcs
             nh,
             global_frame_id);
 
