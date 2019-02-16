@@ -250,6 +250,15 @@ std::size_t NavLattice8D::hashkey_4d(double x_, double y_, double z_,
     return seed;
 }
 
+int NavLattice8D::get_foot_state_cellid(const int& x, const int& y,
+                                        const int& z, const int& theta) const
+{
+    const int cols = distance_map_->numCellsX();
+    const int rows = distance_map_->numCellsY();
+    const int height = distance_map_->numCellsZ();
+    return (x + (cols * (y + rows * (z + (height * theta)))));
+}
+
 int NavLattice8D::get_foot_state_id(
     const double& x,
     const double& y,

@@ -152,8 +152,8 @@ public:
     bool is_goal(const int& current_state_id);
 
     // Returns the state ID given discretized coordinates
-    //int get_foot_state_id(const int& x, const int& y, const int& z,
-                          //const int& theta) const;
+    int get_foot_state_cellid(const int& x, const int& y, const int& z,
+                          const int& theta) const;
 
     // Returns the state ID given continuous coordinates in meters/radians
     int get_foot_state_id(const double& x, const double& y,
