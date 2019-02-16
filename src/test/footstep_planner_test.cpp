@@ -345,7 +345,7 @@ int main(int argc, char* argv[]) {
             fprintf(file, "\n");
             fprintf(file, "test_%s:\n", test_num);
             fprintf(file, "    solution_found:        %d\n", sol);
-            //fprintf(file, "    hbsp_heuristic_time:   %f\n", hbsp_heuristic_gen_time);
+            fprintf(file, "    Solution Cost: %d\n", solcost);
             fprintf(file, "    anchor_heuristic_time: %f\n", anchor_heuristic_gen_time);
             fprintf(file, "    planning_time:         %f\n", mha_planner->get_final_eps_planning_time());
             fprintf(file, "    total_planning_time:   %f\n", total_planning_time);
