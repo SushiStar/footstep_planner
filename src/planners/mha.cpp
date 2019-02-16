@@ -619,7 +619,7 @@ void MHAPlanner::expand(MHASearchState* state, int hidx)
                         }
                         else {
                             //ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, m_eps_mha * fanchor);
-                            ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, fanchor);
+                            ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, (double)fanchor);
                         }
                     }
                 }
