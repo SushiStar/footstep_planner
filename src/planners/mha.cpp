@@ -61,7 +61,7 @@ MHAPlanner::MHAPlanner(
     m_initial_eps_mha(5.0),
     m_max_expansions(0),
     m_eps(3.0),
-    m_eps_mha(2.0),
+    m_eps_mha(1.0),
     m_eps_satisfied((double)INFINITECOST),
     m_num_expansions(0),
     m_elapsed(0.0),
@@ -218,7 +218,8 @@ int MHAPlanner::replan(
             if (m_goal_state->g <= get_minf(m_open[0]) ||
                 environment_->is_goal(s->state_id))
             {
-                m_eps_satisfied = m_eps * m_eps_mha;
+                //m_eps_satisfied = m_eps * m_eps_mha;
+                m_eps_satisfied = m_eps;
                 extract_path(solution_stateIDs_V, solcost, s);
                 return 1;
             }
@@ -233,14 +234,16 @@ int MHAPlanner::replan(
             }
 
             if (!m_open[hidx].emptyheap() &&
-                get_minf(m_open[hidx]) <= m_eps_mha * get_minf(m_open[0]))
+                //get_minf(m_open[hidx]) <= m_eps_mha * get_minf(m_open[0]))
+                get_minf(m_open[hidx]) <= get_minf(m_open[0]))
             {
                 MHASearchState* s =
                             state_from_open_state(m_open[hidx].getminheap());
                 if (m_goal_state->g <= get_minf(m_open[hidx]) ||
                     environment_->is_goal(s->state_id))
                 {
-                    m_eps_satisfied = m_eps * m_eps_mha;
+                    //m_eps_satisfied = m_eps * m_eps_mha;
+                    m_eps_satisfied = m_eps;
                     extract_path(solution_stateIDs_V, solcost, s);
                     return 1;
                 }
@@ -254,7 +257,8 @@ int MHAPlanner::replan(
                 if (m_goal_state->g <= get_minf(m_open[0]) ||
                     environment_->is_goal(s->state_id))
                 {
-                    m_eps_satisfied = m_eps * m_eps_mha;
+                    //m_eps_satisfied = m_eps * m_eps_mha;
+                    m_eps_satisfied = m_eps;
                     extract_path(solution_stateIDs_V, solcost, s);
                     return 1;
                 }
@@ -608,12 +612,14 @@ void MHAPlanner::expand(MHASearchState* state, int hidx)
                 if (!closed_in_add_search(succ_state)) {
                     for (int temp_hidx = 1; temp_hidx < num_heuristics(); ++temp_hidx) {
                         int fn = compute_key(succ_state, temp_hidx);
-                        if (fn <= m_eps_mha * fanchor) {
+                        //if (fn <= m_eps_mha * fanchor) {
+                        if (fn <= fanchor) {
                             insert_or_update(succ_state, temp_hidx, fn);
                             ROS_DEBUG("  Update in search %d with f = %d", temp_hidx, fn);
                         }
                         else {
-                            ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, m_eps_mha * fanchor);
+                            //ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, m_eps_mha * fanchor);
+                            ROS_DEBUG("  Skipping update of in search %d (%0.3f > %0.3f)", temp_hidx, (double)fn, fanchor);
                         }
                     }
                 }

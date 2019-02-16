@@ -107,12 +107,12 @@ public:
 
     // Creates the start state for the given position. If the start state is not
     // valid throws a ROS_ERROR and returns the start state id otherwise
-    int set_start_state(const double& x, const double& y, const double& z,
+    int set_start_state(const double& x_, const double& y_, const double& z_,
                         const double& theta_rad);
 
     // Create the goal state for the given position. If the goal state is not
     // valid throws a ROS_ERROR and returns the goal state id otherwise
-    int set_goal_state(const double& x, const double& y, const double& z,
+    int set_goal_state(const double& x_, const double& y_, const double& z_,
                        const double& theta_rad);
 
     // Returns the foot state at the given ID, if it exists, and NULL otherwise
