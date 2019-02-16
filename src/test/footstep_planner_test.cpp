@@ -305,14 +305,16 @@ int main(int argc, char* argv[]) {
     }
 
     if (visualize["homotopic_heuristic"]) {
-        visualize::visualize_hbsp_heuristic_values(
-            nh,
-            global_frame_id,
-            environment_interpreter->get_distance_map(),
-            environment_interpreter,
-            nav_lattice_2d,
-            hbsp_planner,
-            h_vals_pub);
+        /*
+         *visualize::visualize_hbsp_heuristic_values(
+         *    nh,
+         *    global_frame_id,
+         *    environment_interpreter->get_distance_map(),
+         *    environment_interpreter,
+         *    nav_lattice_2d,
+         *    hbsp_planner,
+         *    h_vals_pub);
+         */
     }
 
     if (visualize["anchor_heuristic"]) {
@@ -333,7 +335,6 @@ int main(int argc, char* argv[]) {
     const int sol = mha_planner->replan(120.0, &solution_stateIDs_V, &solcost);
 
     const double total_planning_time =
-        hbsp_heuristic_gen_time + \
         anchor_heuristic_gen_time + \
         mha_planner->get_final_eps_planning_time();
 
@@ -344,7 +345,7 @@ int main(int argc, char* argv[]) {
             fprintf(file, "\n");
             fprintf(file, "test_%s:\n", test_num);
             fprintf(file, "    solution_found:        %d\n", sol);
-            fprintf(file, "    hbsp_heuristic_time:   %f\n", hbsp_heuristic_gen_time);
+            //fprintf(file, "    hbsp_heuristic_time:   %f\n", hbsp_heuristic_gen_time);
             fprintf(file, "    anchor_heuristic_time: %f\n", anchor_heuristic_gen_time);
             fprintf(file, "    planning_time:         %f\n", mha_planner->get_final_eps_planning_time());
             fprintf(file, "    total_planning_time:   %f\n", total_planning_time);
@@ -359,7 +360,7 @@ int main(int argc, char* argv[]) {
     // print statistics
     ROS_INFO("Statistics:");
     ROS_INFO("    Solution Cost: %d", solcost);
-    ROS_INFO("    hbsp_heuristic_time:      %f", hbsp_heuristic_gen_time);
+    //ROS_INFO("    hbsp_heuristic_time:      %f", hbsp_heuristic_gen_time);
     ROS_INFO("    anchor_heuristic_time:    %f", anchor_heuristic_gen_time);
     ROS_INFO("    planning time:            %f", mha_planner->get_final_eps_planning_time());
     ROS_INFO("    total_planning_time:      %f", total_planning_time);

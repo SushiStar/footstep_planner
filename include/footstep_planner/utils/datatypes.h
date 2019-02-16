@@ -31,7 +31,7 @@
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_UTILS_DATATYPES_H_
 
 #include <Eigen/Geometry>
-#include <boost/functional/hash>
+#include <boost/functional/hash/hash.hpp>
 
 namespace footstep_planner {
 namespace graphs {
@@ -102,7 +102,7 @@ struct BipedalState {
         theta = theta_;
     }
 
-    Eigen::Vector4d get_center() {
+    Eigen::Vector4d get_center() const {
         Eigen::Vector4d c(x, y, z, theta);
         return c;
     }
@@ -157,7 +157,7 @@ struct hash<footstep_planner::graphs::FootState> {
 
         return seed;
     }
-}
+};
 
 }  // namespace std
 

@@ -31,7 +31,7 @@
 #define SRC_FOOTSTEP_PLANNER_INCLUDE_FOOTSTEP_PLANNER_GRAPHS_NAV_LATTICE_8D_H_
 
 #include <environment_projections.pb.h>
-//#include <footstep_planner/graphs/homotopy_information.h>
+#include <footstep_planner/graphs/homotopy_information.h>
 #include <footstep_planner/utils/datatypes.h>
 #include <robot_parameters.pb.h>
 #include <smpl/distance_map/sparse_distance_map.h>
@@ -213,7 +213,7 @@ private:
                                      const double& theta_rad);
 
     // Creates a new bipedal state and returns its state ID
-    int create_new_bipedal_state(const BipedalState* new_state);
+    int create_new_bipedal_state(BipedalState* new_state);
 
     // Returns the cost of executing the action to move from the source state
     // to the new state.
@@ -241,7 +241,7 @@ private:
 
     // A mapping between state IDs and state coordinates
     std::unordered_map<std::size_t, FootState*> foot_state_to_ID_;
-    std::vector<FootState*> foot_ID_to_state;
+    std::vector<FootState*> foot_ID_to_state_;
 
     // A mapping between a signature and its ID and vice versa
     //std::unordered_map<std::vector<int>, int> signature_to_ID_;
@@ -272,7 +272,7 @@ private:
         valid_stepping_cells_;
 
     // hash for footprint
-    const std::size_t hashkey_4d(double x_, double y_, double z_, double theta_);
+    std::size_t hashkey_4d(double x_, double y_, double z_, double theta_) const;
 };
 
 }  // namespace graphs

@@ -83,21 +83,31 @@ int NavLattice8D::set_bipedal_state(
     const double nominal_offset_m = robot_parameters_.nominal_offset_m;
     const double res = distance_map_->resolution();
 
-    const double right_x_direction = nearbyint(cos(theta_rad));
-    const double right_y_direction = nearbyint(sin(theta_rad));
+    /*
+     *const double right_x_direction = nearbyint(cos(theta_rad));
+     *const double right_y_direction = nearbyint(sin(theta_rad));
+     */
+    const double right_x_direction = cos(theta_rad);
+    const double right_y_direction = sin(theta_rad);
+
     const Eigen::Vector4d right_foot(
-        x_m + (nominal_offset_m/2)*right_x_direction,
-        y_m + (nominal_offset_m/2)*right_y_direction,
-        z_m,
+        x + (nominal_offset_m/2.0)*right_x_direction,
+        y + (nominal_offset_m/2.0)*right_y_direction,
+        z,
         theta_rad);
 
     const double offset_theta_rad =
         utils::normalize_angle_rad(theta_rad + M_PI);
-    const double left_x_direction = nearbyint(cos(offset_theta_rad));
-    const double left_y_direction = nearbyint(sin(offset_theta_rad));
+    /*
+     *const double left_x_direction = nearbyint(cos(offset_theta_rad));
+     *const double left_y_direction = nearbyint(sin(offset_theta_rad));
+     */
+    const double left_x_direction = cos(offset_theta_rad);
+    const double left_y_direction = sin(offset_theta_rad);
+
     const Eigen::Vector4d left_foot(
-        x + (nominal_offset_m/2)*left_x_direction,
-        y + (nominal_offset_m/2)*left_y_direction,
+        x + (nominal_offset_m/2.0)*left_x_direction,
+        y + (nominal_offset_m/2.0)*left_y_direction,
         z,
         theta_rad);
 
@@ -113,7 +123,7 @@ int NavLattice8D::set_bipedal_state(
     FootState* right_foot_state = get_foot_state(right_foot);
     if (right_foot_state == nullptr) {
         right_foot_state = create_new_foot_state(right_foot);
-        if (!right_foot_id) {
+        if (!right_foot_state) {
             ROS_ERROR("[NavLattice8D] Invalid right foot state.");
             return -1;
         }
@@ -242,8 +252,8 @@ bool NavLattice8D::is_goal(const int& current_state_id) {
     return false;
 }
 
-const std::size_t NavLattice8D::hashkey_4d(double x_, double y_, double z_,
-                                           double theta_) {
+std::size_t NavLattice8D::hashkey_4d(double x_, double y_, double z_,
+                                           double theta_) const{
     std::size_t seed = 7;
     std::size_t x, y, z, theta;
     x = boost::hash_value(x_);
@@ -272,7 +282,7 @@ int NavLattice8D::get_foot_state_id(
         return -1;
     }
 
-    return  state->id;
+    return  state->second->id;
 }
 
 Eigen::Vector4d NavLattice8D::get_continuous_coordinates(
@@ -351,7 +361,7 @@ void NavLattice8D::get_transformed_collision_spheres(
     const int &bipedal_state_id,
     std::vector<Eigen::Vector4d>* transformed_spheres) {
     const BipedalState* bipedal_state = get_bipedal_state(bipedal_state_id);
-    if (bipedal_state == nyllptr) return;
+    if (bipedal_state == nullptr) return;
 
     const Eigen::Vector4d left_foot_pos =
         get_continuous_coordinates(bipedal_state->left_foot_id);
@@ -410,18 +420,18 @@ FootState* NavLattice8D::get_foot_state(
     distance_map_->worldToGrid(x, y, z, x_m, y_m, z_m);
     if (!distance_map_->isCellValid(x_m, y_m, z_m)) return nullptr; 
 
-    const int state_id = get_foot_state_id(x, y, z, theta);  
+    const int state_id = get_foot_state_id(x, y, z, theta_rad);  
 
     return get_foot_state(state_id);
 }
 
 FootState* NavLattice8D::get_foot_state(const int& state_id) const {
 
-    if (state_4D_id >= foot_ID_to_state_.size()) {
+    if (state_id >= foot_ID_to_state_.size()) {
         ROS_ERROR("[NavLattice8D] Invalid state ID.");
         return nullptr;
     }
-    return foot_ID_to_state_->at(state_4D_id);
+    return foot_ID_to_state_.at(state_id);
 }
 
 BipedalState* NavLattice8D::get_bipedal_state(const int& state_id) {
@@ -449,16 +459,16 @@ FootState* NavLattice8D::create_new_foot_state(
     const double& theta_rad) {
 
     if(is_valid_foot_state(x, y, z)){
-        int id = foot_ID_to_state.size();
+        int id = foot_ID_to_state_.size();
         FootState* ptr = new FootState(id, x, y, z, theta_rad);
         foot_state_to_ID_[hashkey_4d(x,y,z,theta_rad)] = ptr;
-        foot_ID_to_state.pushback(ptr);
+        foot_ID_to_state_.push_back(ptr);
         return ptr;
     }
     return nullptr;
 }
 
-int NavLattice8D::create_new_bipedal_state(const BipedalState* new_state) {
+int NavLattice8D::create_new_bipedal_state(BipedalState* new_state) {
     const int state_id = bipedal_ID_to_state_.size();
     //bipedal_ID_to_state_.resize(state_id + 1, nullptr);
 
@@ -599,7 +609,7 @@ void NavLattice8D::get_succs(
             (bipedal_state->next_foot == right) ? foot_succ_id : pivot_foot_id;
         
         const Eigen::Vector4d bpd_center =
-        get_cont_averaged_state(new_state->left_state_id, new_state->right_state_id);
+        get_cont_averaged_state(new_state->left_foot_id, new_state->right_foot_id);
         new_state->set_center(bpd_center);
 
         int bipedal_id;
