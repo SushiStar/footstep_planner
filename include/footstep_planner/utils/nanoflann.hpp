@@ -431,10 +431,14 @@ namespace nanoflann
 
 		inline DistanceType evalMetric(const T* a, const size_t b_idx, size_t size) const {
 			DistanceType result = DistanceType();
-			for (size_t i = 0; i < size; ++i) {
-				const DistanceType diff = a[i] - data_source.kdtree_get_pt(b_idx, i);
-				result += diff * diff;
-			}
+
+			const DistanceType diff0 = (a[0] - data_source.kdtree_get_pt(b_idx, 0));
+            const DistanceType diff1 = (a[1] - data_source.kdtree_get_pt(b_idx, 1));
+            const DistanceType diff2 = (a[2] - data_source.kdtree_get_pt(b_idx, 2));
+            const DistanceType diff3 = 0.0002*(1-std::cos(a[3] - data_source.kdtree_get_pt(b_idx, 3) ));
+
+            result += diff0*diff0 + diff1*diff1 + diff2*diff2 + diff3;
+
 			return result;
 		}
 
