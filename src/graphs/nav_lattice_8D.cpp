@@ -450,7 +450,7 @@ int NavLattice8D::create_new_bipedal_state(BipedalState* new_state)
     bipedal_state_to_ID_[hashkey_4d(new_state->x, new_state->y, new_state->z,
                                     new_state->theta)] = new_state;
 
-    //kdtree->addPoints(state_id, state_id);
+    kdtree->addPoints(state_id, state_id);
 
     return state_id;
 }
