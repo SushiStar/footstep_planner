@@ -1,2 +1,2 @@
 *.swp
-test/stats.yaml
+test/*.yaml
