@@ -87,6 +87,12 @@ struct BipedalState {
     int right_foot_id;
 
     int id;
+    
+    // parent id
+    int pid;
+
+    // dominate state ID
+    int domID;
 
     BipedalState() : x(0), y(0), z(0), theta(0) {}
     void set_center(const Eigen::Vector4d &center) {

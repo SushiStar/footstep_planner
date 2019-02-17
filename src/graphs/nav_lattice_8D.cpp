@@ -53,7 +53,7 @@ NavLattice8D::NavLattice8D(
     footstep_planner::proto::unpack_from_proto(&robot_parameters_,
                                                robot_details);
     bipedal_ID_to_state_.clear();
-    treeContainer.bipedal_ID_to_state_ = &bipedal_ID_to_state_;
+    treeContainer.bipedal_ID_to_state_ = &NOTDOM;
     kdtree = std::make_shared<kdtree_>(
         4 /*dim*/, treeContainer,
         nanoflann::KDTreeSingleIndexAdaptorParams(10));
@@ -129,6 +129,7 @@ int NavLattice8D::set_bipedal_state(const double& x, const double& y,
     new_state->left_foot_id = left_foot_state->id;
     new_state->right_foot_id = right_foot_state->id;
     new_state->set_center(x, y, z, theta_rad);
+    new_state->pid = -10;   // assuming start&goal state have no parent.
 
     int bipedal_id = create_new_bipedal_state(new_state);
     // const auto map_elem = bipedal_state_to_ID_.find(new_state);
@@ -446,11 +447,11 @@ int NavLattice8D::create_new_bipedal_state(BipedalState* new_state)
 {
     const int state_id = bipedal_ID_to_state_.size();
     new_state->id = state_id;
+    new_state->domID = -1;  // default
     bipedal_ID_to_state_.push_back(new_state);
     bipedal_state_to_ID_[hashkey_4d(new_state->x, new_state->y, new_state->z,
                                     new_state->theta)] = new_state;
 
-    kdtree->addPoints(state_id, state_id);
 
     return state_id;
 }
@@ -590,6 +591,7 @@ void NavLattice8D::get_succs(const int& bipedal_state_id,
                 new_state->z, new_state->theta);
         const auto map_elem = bipedal_state_to_ID_.find(key);
         if (map_elem == bipedal_state_to_ID_.end()) {
+            new_state->pid = bipedal_state_id;
             bipedal_id = create_new_bipedal_state(new_state);
             // int  bipedal_id = create_new_bipedal_state(new_state);
         }
@@ -653,6 +655,75 @@ Eigen::Vector4i NavLattice8D::get_disc_averaged_state(
 
     return avg_state;
 }
+
+double NavLattice8D::GetInflation() {
+    return 3.0;
+}
+
+int NavLattice8D::GetNearestNeighbor(int stateID) {
+    if(stateID >= (int)bipedal_ID_to_state_.size() ){
+        ROS_ERROR("ERROR in NavLattice8D... function: GetNearestNeighbor stateID illegal.");
+    }
+
+    BipedalState* qstate = bipedal_ID_to_state_.at(stateID);
+    double res = distance_map_->resolution(); 
+    double radius = 0.141*res;      // the min step size is 0.141 cellsize
+    
+    /* nanoflann */
+    double query_pt[4] = {qstate->x, qstate->y, qstate->z, qstate->theta};
+    const std::size_t numofneighbors = 40;      // depends on number of nearest neighbors
+    std::size_t neibIndex[numofneighbors];
+    double distance[numofneighbors];
+
+    nanoflann::KNNResultSet<double> resultSet(numofneighbors);
+    resultSet.init(neibIndex, distance);
+    auto found = kdtree->findNeighbors(resultSet, query_pt, nanoflann::SearchParams(0));
+
+    if (found) {
+        for (auto i = 0; i < numofneighbors; ++i) {
+            auto neighbor = bipedal_ID_to_state_.at(neibIndex[i]);
+            if (neighbor->pid == qstate->pid || neighbor->id == qstate->pid) {
+                continue;
+            } else {
+                double dist = std::sqrt(distance[i]);
+                if (dist > radius ) return -1;
+                return neibIndex[i];
+            }
+        }
+    } 
+
+    return -1;
+
+}   // GetNearestNeighbor
+
+
+void NavLattice8D::InsertIntoDOM(int stateID) {
+    if(stateID >= (int)bipedal_ID_to_state_.size() ){
+        ROS_ERROR("ERROR in NavLattice8D... function: InsertIntoDom stateID illegal.");
+    }
+
+    // get the state
+    auto state = bipedal_ID_to_state_.at(stateID);
+    state->domID = NOTDOM.size();
+
+    // insert into container
+    NOTDOM.push_back(state);
+    kdtree->addPoints( (size_t)NOTDOM.size()-1, (size_t)NOTDOM.size()-1);
+}
+
+void NavLattice8D::RemoveFromDOM(int stateID){ 
+    if(stateID >= (int)bipedal_ID_to_state_.size() ){
+        ROS_ERROR("ERROR in NavLattice8D... function: RemoveFromDOM stateID illegal.");
+    }
+
+    // get the state
+    auto state = bipedal_ID_to_state_.at(stateID);
+    if (-1 == state->domID) return;
+
+    kdtree->removePoint(state->domID);
+    state->domID = -1;
+}
+
 
 }  // namespace graphs
 }  // namespace footstep_planner

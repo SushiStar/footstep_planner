@@ -182,8 +182,19 @@ public:
     Eigen::Vector4i get_disc_averaged_state(const int& left_state_id,
                                             const int& right_state_id) const;
 
-    // Given the signature ID, fills in the signature vector
-    //void get_signature(const int& signature_id, std::vector<int>* signature);
+    // Return the stateID of the nearest neighbor
+    // or -1 if the nearest neighbor does not exist
+    virtual int GetNearestNeighbor(int stateID);
+
+    // Insert state into dominate class
+    virtual void InsertIntoDOM(int stateID);
+
+    // Remove state from dominate class
+    virtual void RemoveFromDOM(int stateID);
+
+    // Inflation rate of heuristic
+    virtual double GetInflation();
+    
 
 private:
     // This function finds the successors for each foot and fills in the vector
@@ -250,6 +261,7 @@ private:
     // A mapping between a bipedal state and its ID and ivce versa
     std::unordered_map<std::size_t, BipedalState*> bipedal_state_to_ID_;
     std::vector<BipedalState*> bipedal_ID_to_state_;
+    std::vector<BipedalState*> NOTDOM;
 
     // kdtree definition
     typedef nanoflann::KDTreeSingleIndexDynamicAdaptor<
