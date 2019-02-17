@@ -77,8 +77,8 @@ MHAPlanner::MHAPlanner(
 
     // Overwrite default members for ReplanParams to represent a single optimal
     // search
-    m_params.initial_eps = 5.0;
-    m_params.final_eps = 5.0;
+    m_params.initial_eps = 3.0;
+    m_params.final_eps = 3.0;
     m_params.dec_eps = 0.2; // NOTE: same initial epsilon delta as ARA*
     m_params.return_first_solution = false;
     m_params.max_time = 0.0;

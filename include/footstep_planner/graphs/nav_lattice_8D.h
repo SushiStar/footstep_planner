@@ -248,7 +248,7 @@ private:
     //std::vector<std::vector<int>> ID_to_signature_;
 
     // A mapping between a bipedal state and its ID and ivce versa
-    //std::unordered_map<BipedalState, int> bipedal_state_to_ID_;
+    std::unordered_map<std::size_t, BipedalState*> bipedal_state_to_ID_;
     std::vector<BipedalState*> bipedal_ID_to_state_;
 
     // kdtree definition
