@@ -681,7 +681,8 @@ int NavLattice8D::GetNearestNeighbor(int stateID) {
 
     if (found) {
         for (auto i = 0; i < numofneighbors; ++i) {
-            auto neighbor = bipedal_ID_to_state_.at(neibIndex[i]);
+            
+            auto neighbor = NOTDOM.at(neibIndex[i]);
             if (neighbor->pid == qstate->pid || neighbor->id == qstate->pid) {
                 continue;
             } else {
@@ -721,6 +722,7 @@ void NavLattice8D::RemoveFromDOM(int stateID){
     if (-1 == state->domID) return;
 
     kdtree->removePoint(state->domID);
+    NOTDOM.erase(NOTDOM.begin() + state->domID);
     state->domID = -1;
 }
 
