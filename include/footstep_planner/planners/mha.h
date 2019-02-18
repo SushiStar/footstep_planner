@@ -217,7 +217,6 @@ class MHAPlanner : public SBPLPlanner {
     void clear();
 
     int compute_key(MHASearchState* state, int hidx);
-    int compute_key(MHASearchState* state, int hidx, double inflation);
     void expand(MHASearchState* state, int hidx);
 
     MHASearchState* state_from_open_state(AbstractSearchState* open_state);

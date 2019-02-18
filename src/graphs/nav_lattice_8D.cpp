@@ -53,7 +53,7 @@ NavLattice8D::NavLattice8D(
     footstep_planner::proto::unpack_from_proto(&robot_parameters_,
                                                robot_details);
     bipedal_ID_to_state_.clear();
-    treeContainer.bipedal_ID_to_state_ = &NOTDOM;
+    treeContainer.bipedal_ID_to_state_ = &bipedal_ID_to_state_;
     kdtree = std::make_shared<kdtree_>(
         4 /*dim*/, treeContainer,
         nanoflann::KDTreeSingleIndexAdaptorParams(10));
@@ -447,11 +447,11 @@ int NavLattice8D::create_new_bipedal_state(BipedalState* new_state)
 {
     const int state_id = bipedal_ID_to_state_.size();
     new_state->id = state_id;
-    new_state->domID = -1;  // default
+    new_state->valid_children_ratio = 1.0
     bipedal_ID_to_state_.push_back(new_state);
     bipedal_state_to_ID_[hashkey_4d(new_state->x, new_state->y, new_state->z,
                                     new_state->theta)] = new_state;
-
+    kdtree->addPoints((std::size_t)state_id, (std::size_t)state_id);
 
     return state_id;
 }
@@ -611,6 +611,8 @@ void NavLattice8D::get_succs(const int& bipedal_state_id,
         succ_ids->push_back(bipedal_id);
         costs->push_back(cost);
     }
+    std::cout<< "denominator: " << foot_succs.size() << std::endl;
+    bipedal_state->valid_children_ratio = ((double)costs.size()) / ((double)foot_succs.size()); 
 }  // get_succs
 
 Eigen::Vector4d NavLattice8D::get_cont_averaged_state(
@@ -656,16 +658,18 @@ Eigen::Vector4i NavLattice8D::get_disc_averaged_state(
     return avg_state;
 }
 
-double NavLattice8D::GetInflation() {
-    return 3.0;
-}
 
-int NavLattice8D::GetNearestNeighbor(int stateID) {
+int NavLattice8D::GetInflation(int stateID) {
+
     if(stateID >= (int)bipedal_ID_to_state_.size() ){
         ROS_ERROR("ERROR in NavLattice8D... function: GetNearestNeighbor stateID illegal.");
     }
 
     BipedalState* qstate = bipedal_ID_to_state_.at(stateID);
+    auto pstate =  bipedal_ID_to_state_.at(qstate->pid);
+
+    double inflation = 1.0;
+    double threshold = 6.0;
     double res = distance_map_->resolution(); 
     double radius = 0.141*res;      // the min step size is 0.141 cellsize
     
@@ -686,44 +690,18 @@ int NavLattice8D::GetNearestNeighbor(int stateID) {
                 continue;
             } else {
                 double dist = std::sqrt(distance[i]);
-                if (dist > radius ) return -1;
-                return neibIndex[i];
+                double r = radius*std::max(0.1, pstate->valid_children_ratio);
+                
+                if (dist > r) break;
+                inflation = std::max( T*(1.0 - dist/r), 1.0);
+                break;
             }
         }
     } 
 
-    return -1;
+    return inflation;
 
-}   // GetNearestNeighbor
-
-
-void NavLattice8D::InsertIntoDOM(int stateID) {
-    if(stateID >= (int)bipedal_ID_to_state_.size() ){
-        ROS_ERROR("ERROR in NavLattice8D... function: InsertIntoDom stateID illegal.");
-    }
-
-    // get the state
-    auto state = bipedal_ID_to_state_.at(stateID);
-    state->domID = NOTDOM.size();
-
-    // insert into container
-    NOTDOM.push_back(state);
-    kdtree->addPoints( (size_t)NOTDOM.size()-1, (size_t)NOTDOM.size()-1);
-}
-
-void NavLattice8D::RemoveFromDOM(int stateID){ 
-    if(stateID >= (int)bipedal_ID_to_state_.size() ){
-        ROS_ERROR("ERROR in NavLattice8D... function: RemoveFromDOM stateID illegal.");
-    }
-
-    // get the state
-    auto state = bipedal_ID_to_state_.at(stateID);
-    if (-1 == state->domID) return;
-
-    kdtree->removePoint(state->domID);
-    state->domID = -1;
-}
-
+}   // GetInflation
 
 }  // namespace graphs
 }  // namespace footstep_planner

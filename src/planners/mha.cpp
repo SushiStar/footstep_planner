@@ -538,11 +538,6 @@ int MHAPlanner::compute_key(MHASearchState* state, int hidx)
     return state->g + m_eps * state->od[hidx].h;
 }
 
-int MHAPlanner::compute_key(MHASearchState* state, int hidx, double inflation)
-{
-    return (int)(state->g + m_eps * inflation * state->od[hidx].h);
-}
-
 void MHAPlanner::expand(MHASearchState* state, int hidx)
 {
     ROS_DEBUG("Expanding state %d in search %d", state->state_id, hidx);
@@ -599,8 +594,7 @@ void MHAPlanner::expand(MHASearchState* state, int hidx)
 
     assert(succ_ids.size() == costs.size());
     
-    double inflation = environment_->GetInflation();
-
+    double inflation = 1.0;
     for (size_t sidx = 0; sidx < succ_ids.size(); ++sidx)  {
         const int cost = static_cast<int>(costs[sidx]);
         MHASearchState* succ_state = get_state(succ_ids[sidx]);
@@ -613,52 +607,11 @@ void MHAPlanner::expand(MHASearchState* state, int hidx)
             succ_state->g = new_g;
             succ_state->bp = state;
 
-            // implement dominate class
-            int NNID = environment_->GetNearestNeighbor(succ_ids[sidx]);
-
-            if(-1 == NNID) {    // NN does exist within radius
-
-                if (!closed_in_anc_search(succ_state)) {
-                    const int fanchor = compute_key(succ_state, 0);
-                    insert_or_update(succ_state, 0, fanchor);
-                    ROS_DEBUG("  Update in search %d with f = %d", 0, fanchor);
-                }
-                environment_->InsertIntoDOM(succ_ids[sidx]);
-
-            } else {    // NN exist, may re-order the dominate class if new_state is better
-
-                // get the neighbor
-                MHASearchState*  NeighborMState = get_state(NNID);
-                //auto neighborState = get_state(NeighborMState->state_id);
-
-                if(new_g < NeighborMState->g){
-                    // update the dominate class
-                    environment_->RemoveFromDOM(NNID);
-                    environment_->InsertIntoDOM(succ_ids[sidx]);
-                    
-                    // if neighbor is in OPEN then update OPEN
-                    if (!closed_in_anc_search(NeighborMState)) {
-                        const int fanchor = compute_key(NeighborMState, 0, inflation);
-                        insert_or_update(NeighborMState, 0, fanchor);
-                        ROS_DEBUG("  Update in search %d with f = %d", 0, fanchor);
-                    }
-
-                    // insert succstate
-                    if (!closed_in_anc_search(succ_state)) {
-                        const int fanchor = compute_key(succ_state, 0);
-                        insert_or_update(succ_state, 0, fanchor);
-                        ROS_DEBUG("  Update in search %d with f = %d", 0, fanchor);
-                    }
-
-                } else {
-                    if (!closed_in_anc_search(succ_state)) {
-                        const int fanchor = compute_key(succ_state, 0, inflation);
-                        insert_or_update(succ_state, 0, fanchor);
-                        ROS_DEBUG("  Update in search %d with f = %d", 0, fanchor);
-                    }
-                }
-            }
-                
+            if (!closed_in_anc_search(succ_state)) {
+                const int fanchor = compute_key(succ_state, 0);
+                insert_or_update(succ_state, 0, fanchor);
+                ROS_DEBUG("  Update in search %d with f = %d", 0, fanchor);
+            } 
         }
     }
 
@@ -691,11 +644,12 @@ int MHAPlanner::compute_heuristic(MHASearchState* state, int hidx)
     const int id = environment_->get_foot_state_cellid(
         avg_state.x(), avg_state.y(), avg_state.z(), 0);
 
-    //if (hidx == 0) {
-        return m_hanchor->get_heuristic_value(
+    int original_h = m_hanchor->get_heuristic_value(
             id, avg_state.x(), avg_state.y(), avg_state.z());
-    //}
-        
+
+    int h = environment_->GetInflation(state->stateid) * (double)original_h; 
+
+    return (int)h;
 }
 
 int MHAPlanner::get_minf(CHeap& pq) const
