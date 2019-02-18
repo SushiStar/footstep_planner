@@ -671,7 +671,7 @@ int NavLattice8D::GetNearestNeighbor(int stateID) {
     
     /* nanoflann */
     double query_pt[4] = {qstate->x, qstate->y, qstate->z, qstate->theta};
-    const std::size_t numofneighbors = 40;      // depends on number of nearest neighbors
+    const std::size_t numofneighbors = 20;      // depends on number of nearest neighbors
     std::size_t neibIndex[numofneighbors];
     double distance[numofneighbors];
 

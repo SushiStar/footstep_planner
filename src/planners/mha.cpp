@@ -540,7 +540,7 @@ int MHAPlanner::compute_key(MHASearchState* state, int hidx)
 
 int MHAPlanner::compute_key(MHASearchState* state, int hidx, double inflation)
 {
-    return (int)(state->g + m_eps * inflation * state->od[hidx].h);
+    return (int)(state->g + m_eps * inflation * (double)state->od[hidx].h);
 }
 
 void MHAPlanner::expand(MHASearchState* state, int hidx)
