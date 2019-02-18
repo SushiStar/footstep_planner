@@ -447,7 +447,7 @@ int NavLattice8D::create_new_bipedal_state(BipedalState* new_state)
 {
     const int state_id = bipedal_ID_to_state_.size();
     new_state->id = state_id;
-    new_state->valid_children_ratio = 1.0
+    new_state->valid_children_ratio = 1.0;
     bipedal_ID_to_state_.push_back(new_state);
     bipedal_state_to_ID_[hashkey_4d(new_state->x, new_state->y, new_state->z,
                                     new_state->theta)] = new_state;
@@ -559,7 +559,7 @@ void NavLattice8D::get_succs(const int& bipedal_state_id,
                              std::vector<int>* succ_ids,
                              std::vector<double>* costs)
 {
-    const BipedalState* bipedal_state = get_bipedal_state(bipedal_state_id);
+    BipedalState* bipedal_state = get_bipedal_state(bipedal_state_id);
     if (bipedal_state == nullptr) return;
 
     const int pivot_foot_id = get_pivot_foot_id(*bipedal_state);
@@ -611,8 +611,7 @@ void NavLattice8D::get_succs(const int& bipedal_state_id,
         succ_ids->push_back(bipedal_id);
         costs->push_back(cost);
     }
-    std::cout<< "denominator: " << foot_succs.size() << std::endl;
-    bipedal_state->valid_children_ratio = ((double)costs.size()) / ((double)foot_succs.size()); 
+    bipedal_state->valid_children_ratio = ((double)costs->size()) / ((double)foot_succs.size()); 
 }  // get_succs
 
 Eigen::Vector4d NavLattice8D::get_cont_averaged_state(
@@ -666,6 +665,7 @@ int NavLattice8D::GetInflation(int stateID) {
     }
 
     BipedalState* qstate = bipedal_ID_to_state_.at(stateID);
+    if(qstate->pid < 0) return 1.0;
     auto pstate =  bipedal_ID_to_state_.at(qstate->pid);
 
     double inflation = 1.0;
@@ -675,7 +675,7 @@ int NavLattice8D::GetInflation(int stateID) {
     
     /* nanoflann */
     double query_pt[4] = {qstate->x, qstate->y, qstate->z, qstate->theta};
-    const std::size_t numofneighbors = 40;      // depends on number of nearest neighbors
+    const std::size_t numofneighbors = 15;      // depends on number of nearest neighbors
     std::size_t neibIndex[numofneighbors];
     double distance[numofneighbors];
 
@@ -693,7 +693,7 @@ int NavLattice8D::GetInflation(int stateID) {
                 double r = radius*std::max(0.1, pstate->valid_children_ratio);
                 
                 if (dist > r) break;
-                inflation = std::max( T*(1.0 - dist/r), 1.0);
+                inflation = std::max( threshold *(1.0 - dist/r), 1.0);
                 break;
             }
         }
