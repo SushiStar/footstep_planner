@@ -722,7 +722,7 @@ void NavLattice8D::RemoveFromDOM(int stateID){
     if (-1 == state->domID) return;
 
     kdtree->removePoint(state->domID);
-    NOTDOM.erase(NOTDOM.begin() + state->domID);
+    //NOTDOM.erase(NOTDOM.begin() + state->domID);
     state->domID = -1;
 }
 
