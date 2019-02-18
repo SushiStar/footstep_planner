@@ -647,7 +647,7 @@ int MHAPlanner::compute_heuristic(MHASearchState* state, int hidx)
     int original_h = m_hanchor->get_heuristic_value(
             id, avg_state.x(), avg_state.y(), avg_state.z());
 
-    int h = environment_->GetInflation(state->state_id) * (double)original_h; 
+    double h = environment_->GetInflation(state->state_id) * (double)original_h; 
 
     return (int)h;
 }

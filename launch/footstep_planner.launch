@@ -3,7 +3,7 @@
 
     <!-- node name="rviz" pkg="rviz" type="rviz" args="-d $(find footstep_planner)/rviz/vis.rviz"/-->
 
-  	<arg name="stats_filepath" default="$(find footstep_planner)/test/Pablo_stat.yaml"/>
+  	<arg name="stats_filepath" default="$(find footstep_planner)/test/Penalty_stat.yaml"/>
     <arg name="test_num" default="1"/>
   	<arg name="scenario" default="hbsp_1/hbsp_test_1_1.yaml"/>
 

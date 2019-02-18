@@ -658,7 +658,7 @@ Eigen::Vector4i NavLattice8D::get_disc_averaged_state(
 }
 
 
-int NavLattice8D::GetInflation(int stateID) {
+double NavLattice8D::GetInflation(int stateID) {
 
     if(stateID >= (int)bipedal_ID_to_state_.size() ){
         ROS_ERROR("ERROR in NavLattice8D... function: GetNearestNeighbor stateID illegal.");
@@ -669,7 +669,7 @@ int NavLattice8D::GetInflation(int stateID) {
     auto pstate =  bipedal_ID_to_state_.at(qstate->pid);
 
     double inflation = 1.0;
-    double threshold = 6.0;
+    double threshold = 3.0;
     double res = distance_map_->resolution(); 
     double radius = 0.141*res;      // the min step size is 0.141 cellsize
     

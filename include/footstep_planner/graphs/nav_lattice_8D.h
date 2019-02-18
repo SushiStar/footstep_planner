@@ -184,7 +184,7 @@ public:
 
     // Return the stateID of the nearest neighbor
     // or -1 if the nearest neighbor does not exist
-    virtual int GetInflation(int stateID);
+    virtual double GetInflation(int stateID);
 
 private:
     // This function finds the successors for each foot and fills in the vector
