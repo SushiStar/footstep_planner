@@ -242,6 +242,16 @@ std::size_t NavLattice8D::hashkey_4d(double x_, double y_, double z_,
     return seed;
 }
 
+std::size_t NavLattice8D::hashkey_bi(std::size_t left, std::size_t right) cosnt
+{
+    std::size_t seed = 13;
+    boost::hash_combine(seed, left);
+    boost::hash_combine(seed, right);
+
+    return seed;
+}
+
+
 int NavLattice8D::get_foot_state_cellid(const int& x, const int& y,
                                         const int& z, const int& theta) const
 {
@@ -449,8 +459,7 @@ int NavLattice8D::create_new_bipedal_state(BipedalState* new_state)
     new_state->id = state_id;
     new_state->domID = -1;  // default
     bipedal_ID_to_state_.push_back(new_state);
-    bipedal_state_to_ID_[hashkey_4d(new_state->x, new_state->y, new_state->z,
-                                    new_state->theta)] = new_state;
+    bipedal_state_to_ID_[hashkey_bi(new_state->left_foot_id, new_state->right_foot_id)] = new_state;
 
 
     return state_id;
@@ -587,8 +596,7 @@ void NavLattice8D::get_succs(const int& bipedal_state_id,
         new_state->set_center(bpd_center);
 
         int bipedal_id;
-        auto key = hashkey_4d(new_state->x, new_state->y, 
-                new_state->z, new_state->theta);
+        auto key = hashkey_bi(new_state->left_foot_id, new_state->right_foot_id);
         const auto map_elem = bipedal_state_to_ID_.find(key);
         if (map_elem == bipedal_state_to_ID_.end()) {
             new_state->pid = bipedal_state_id;
