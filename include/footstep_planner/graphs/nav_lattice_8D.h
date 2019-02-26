@@ -273,6 +273,7 @@ private:
 
     // hash for footprint
     std::size_t hashkey_4d(double x_, double y_, double z_, double theta_) const;
+    std::size_t hashkey_bi(std::size_t left, std::size_t right) const;
 };
 
 }  // namespace graphs
