@@ -61,7 +61,7 @@ MHAPlanner::MHAPlanner(
     m_params(0.0),
     m_initial_eps_mha(5.0),
     m_max_expansions(0),
-    m_eps(1.5),
+    m_eps(3.0),
     m_eps_mha(1.0),
     m_eps_satisfied((double)INFINITECOST),
     m_num_expansions(0),
