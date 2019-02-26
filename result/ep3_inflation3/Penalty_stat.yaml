@@ -1,0 +1,800 @@
+
+test_1:
+    solution_found:        1
+    Solution Cost: 9093
+    anchor_heuristic_time: 0.020710
+    planning_time:         27.872520
+    total_planning_time:   27.893230
+    path length:           290
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4995
+    anchor_heuristic_time: 0.020502
+    planning_time:         4.496979
+    total_planning_time:   4.517481
+    path length:           168
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 11316
+    anchor_heuristic_time: 0.020476
+    planning_time:         25.371358
+    total_planning_time:   25.391834
+    path length:           353
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5029
+    anchor_heuristic_time: 0.020684
+    planning_time:         5.431090
+    total_planning_time:   5.451774
+    path length:           162
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021156
+    planning_time:         120.000097
+    total_planning_time:   120.021253
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 13112
+    anchor_heuristic_time: 0.020878
+    planning_time:         23.204968
+    total_planning_time:   23.225846
+    path length:           387
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6011
+    anchor_heuristic_time: 0.020930
+    planning_time:         5.114203
+    total_planning_time:   5.135133
+    path length:           182
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 7651
+    anchor_heuristic_time: 0.021115
+    planning_time:         7.679896
+    total_planning_time:   7.701011
+    path length:           193
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 12473
+    anchor_heuristic_time: 0.021085
+    planning_time:         21.435486
+    total_planning_time:   21.456571
+    path length:           324
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 10091
+    anchor_heuristic_time: 0.027058
+    planning_time:         11.426373
+    total_planning_time:   11.453431
+    path length:           278
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021193
+    planning_time:         120.000135
+    total_planning_time:   120.021328
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021072
+    planning_time:         120.000023
+    total_planning_time:   120.021095
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 9602
+    anchor_heuristic_time: 0.021027
+    planning_time:         19.684032
+    total_planning_time:   19.705059
+    path length:           323
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8060
+    anchor_heuristic_time: 0.021047
+    planning_time:         31.087707
+    total_planning_time:   31.108754
+    path length:           208
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020528
+    planning_time:         123.300829
+    total_planning_time:   123.321357
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 11916
+    anchor_heuristic_time: 0.021038
+    planning_time:         13.976620
+    total_planning_time:   13.997658
+    path length:           349
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 7017
+    anchor_heuristic_time: 0.021198
+    planning_time:         26.474523
+    total_planning_time:   26.495721
+    path length:           240
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 13519
+    anchor_heuristic_time: 0.020432
+    planning_time:         17.786097
+    total_planning_time:   17.806529
+    path length:           381
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021085
+    planning_time:         120.125657
+    total_planning_time:   120.146742
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5878
+    anchor_heuristic_time: 0.020472
+    planning_time:         26.958836
+    total_planning_time:   26.979308
+    path length:           166
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3971
+    anchor_heuristic_time: 0.021000
+    planning_time:         8.783251
+    total_planning_time:   8.804251
+    path length:           137
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020567
+    planning_time:         120.040444
+    total_planning_time:   120.061011
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4740
+    anchor_heuristic_time: 0.020873
+    planning_time:         0.425854
+    total_planning_time:   0.446727
+    path length:           180
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5599
+    anchor_heuristic_time: 0.020623
+    planning_time:         6.339816
+    total_planning_time:   6.360439
+    path length:           140
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8975
+    anchor_heuristic_time: 0.020750
+    planning_time:         4.792473
+    total_planning_time:   4.813223
+    path length:           235
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6985
+    anchor_heuristic_time: 0.020916
+    planning_time:         11.798396
+    total_planning_time:   11.819312
+    path length:           202
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 9012
+    anchor_heuristic_time: 0.020968
+    planning_time:         10.096938
+    total_planning_time:   10.117906
+    path length:           242
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021094
+    planning_time:         120.000305
+    total_planning_time:   120.021399
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020829
+    planning_time:         120.000094
+    total_planning_time:   120.020923
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8652
+    anchor_heuristic_time: 0.021448
+    planning_time:         59.607193
+    total_planning_time:   59.628641
+    path length:           258
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3138
+    anchor_heuristic_time: 0.020625
+    planning_time:         0.466849
+    total_planning_time:   0.487474
+    path length:           91
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4032
+    anchor_heuristic_time: 0.020708
+    planning_time:         5.894508
+    total_planning_time:   5.915216
+    path length:           148
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3815
+    anchor_heuristic_time: 0.021140
+    planning_time:         0.556236
+    total_planning_time:   0.577376
+    path length:           115
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 7042
+    anchor_heuristic_time: 0.021376
+    planning_time:         11.724289
+    total_planning_time:   11.745665
+    path length:           196
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8218
+    anchor_heuristic_time: 0.020519
+    planning_time:         10.684852
+    total_planning_time:   10.705371
+    path length:           206
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4921
+    anchor_heuristic_time: 0.021501
+    planning_time:         11.546328
+    total_planning_time:   11.567829
+    path length:           165
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5634
+    anchor_heuristic_time: 0.021459
+    planning_time:         8.594471
+    total_planning_time:   8.615930
+    path length:           145
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020922
+    planning_time:         120.000239
+    total_planning_time:   120.021161
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 9281
+    anchor_heuristic_time: 0.020527
+    planning_time:         54.546489
+    total_planning_time:   54.567016
+    path length:           307
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6470
+    anchor_heuristic_time: 0.020807
+    planning_time:         10.928814
+    total_planning_time:   10.949621
+    path length:           216
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 1905
+    anchor_heuristic_time: 0.020740
+    planning_time:         1.047609
+    total_planning_time:   1.068349
+    path length:           68
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5452
+    anchor_heuristic_time: 0.020848
+    planning_time:         8.471008
+    total_planning_time:   8.491856
+    path length:           155
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4465
+    anchor_heuristic_time: 0.020860
+    planning_time:         0.054951
+    total_planning_time:   0.075811
+    path length:           184
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 11017
+    anchor_heuristic_time: 0.021020
+    planning_time:         31.334241
+    total_planning_time:   31.355261
+    path length:           294
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 1459
+    anchor_heuristic_time: 0.021221
+    planning_time:         0.140959
+    total_planning_time:   0.162180
+    path length:           61
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8593
+    anchor_heuristic_time: 0.020766
+    planning_time:         17.742934
+    total_planning_time:   17.763700
+    path length:           275
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3717
+    anchor_heuristic_time: 0.020987
+    planning_time:         0.788619
+    total_planning_time:   0.809606
+    path length:           90
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3419
+    anchor_heuristic_time: 0.020905
+    planning_time:         0.948907
+    total_planning_time:   0.969812
+    path length:           107
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6050
+    anchor_heuristic_time: 0.021071
+    planning_time:         2.426980
+    total_planning_time:   2.448051
+    path length:           171
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6889
+    anchor_heuristic_time: 0.021091
+    planning_time:         3.677635
+    total_planning_time:   3.698726
+    path length:           209
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020769
+    planning_time:         120.015592
+    total_planning_time:   120.036361
+    path length:           0
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 12404
+    anchor_heuristic_time: 0.020706
+    planning_time:         25.700582
+    total_planning_time:   25.721288
+    path length:           331
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8946
+    anchor_heuristic_time: 0.021028
+    planning_time:         10.121908
+    total_planning_time:   10.142936
+    path length:           260
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 8806
+    anchor_heuristic_time: 0.021246
+    planning_time:         9.012734
+    total_planning_time:   9.033980
+    path length:           238
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020910
+    planning_time:         120.000100
+    total_planning_time:   120.021010
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 3714
+    anchor_heuristic_time: 0.021130
+    planning_time:         1.817360
+    total_planning_time:   1.838490
+    path length:           138
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6052
+    anchor_heuristic_time: 0.020434
+    planning_time:         6.176206
+    total_planning_time:   6.196640
+    path length:           183
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6847
+    anchor_heuristic_time: 0.020891
+    planning_time:         4.394773
+    total_planning_time:   4.415664
+    path length:           216
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021075
+    planning_time:         120.000158
+    total_planning_time:   120.021233
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6905
+    anchor_heuristic_time: 0.020818
+    planning_time:         3.380830
+    total_planning_time:   3.401648
+    path length:           259
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5579
+    anchor_heuristic_time: 0.020301
+    planning_time:         2.753554
+    total_planning_time:   2.773855
+    path length:           169
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 13572
+    anchor_heuristic_time: 0.020285
+    planning_time:         18.246129
+    total_planning_time:   18.266414
+    path length:           357
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 6620
+    anchor_heuristic_time: 0.021072
+    planning_time:         8.378053
+    total_planning_time:   8.399125
+    path length:           192
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021255
+    planning_time:         120.000330
+    total_planning_time:   120.021585
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 7848
+    anchor_heuristic_time: 0.020988
+    planning_time:         15.474266
+    total_planning_time:   15.495254
+    path length:           204
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 1419
+    anchor_heuristic_time: 0.020971
+    planning_time:         0.026502
+    total_planning_time:   0.047473
+    path length:           56
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020406
+    planning_time:         120.000344
+    total_planning_time:   120.020750
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 13436
+    anchor_heuristic_time: 0.020940
+    planning_time:         24.947100
+    total_planning_time:   24.968040
+    path length:           354
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.029248
+    planning_time:         120.000108
+    total_planning_time:   120.029356
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021161
+    planning_time:         120.000123
+    total_planning_time:   120.021284
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 5607
+    anchor_heuristic_time: 0.020613
+    planning_time:         24.663265
+    total_planning_time:   24.683878
+    path length:           168
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 11229
+    anchor_heuristic_time: 0.020850
+    planning_time:         48.780149
+    total_planning_time:   48.800999
+    path length:           334
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020587
+    planning_time:         120.000096
+    total_planning_time:   120.020683
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 2723
+    anchor_heuristic_time: 0.020933
+    planning_time:         2.105424
+    total_planning_time:   2.126357
+    path length:           89
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 2372
+    anchor_heuristic_time: 0.020501
+    planning_time:         7.871268
+    total_planning_time:   7.891769
+    path length:           78
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021173
+    planning_time:         120.000199
+    total_planning_time:   120.021372
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 13122
+    anchor_heuristic_time: 0.021205
+    planning_time:         15.694305
+    total_planning_time:   15.715510
+    path length:           280
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        1
+    Solution Cost: 4529
+    anchor_heuristic_time: 0.020979
+    planning_time:         1.720202
+    total_planning_time:   1.741181
+    path length:           163
+    query_type:            "simple"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.020877
+    planning_time:         120.000688
+    total_planning_time:   120.021565
+    path length:           0
+    query_type:            "complex"
+
+
+test_1:
+    solution_found:        0
+    Solution Cost: 1
+    anchor_heuristic_time: 0.021276
+    planning_time:         120.000161
+    total_planning_time:   120.021437
+    path length:           0
+    query_type:            "complex"
+

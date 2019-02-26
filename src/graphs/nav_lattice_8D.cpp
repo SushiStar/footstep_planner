@@ -242,7 +242,7 @@ std::size_t NavLattice8D::hashkey_4d(double x_, double y_, double z_,
     return seed;
 }
 
-std::size_t NavLattice8D::hashkey_bi(std::size_t left, std::size_t right) cosnt
+std::size_t NavLattice8D::hashkey_bi(std::size_t left, std::size_t right) const
 {
     std::size_t seed = 13;
     boost::hash_combine(seed, left);
