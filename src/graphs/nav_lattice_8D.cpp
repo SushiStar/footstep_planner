@@ -680,7 +680,7 @@ double NavLattice8D::GetInflation(int stateID) {
     double inflation = 1.0;
     double threshold = 3.0;
     double res = distance_map_->resolution(); 
-    double radius = 0.141*res;      // the min step size is 0.141 cellsize
+    double radius = 1.41*res;      // the min step size is 0.141 cellsize
     
     /* nanoflann */
     double query_pt[4] = {qstate->x, qstate->y, qstate->z, qstate->theta};
